@@ -33,8 +33,13 @@ jobs:
         run: pytest tests/
         continue-on-error: true
 
-      - name: Build Docker images
-        run: docker-compose build
+      - name: Build services
+        run: docker compose build
+
+      - name: Start services
+        run: |
+          docker compose up -d
+          sleep 10
 
       # - name: Run API integration tests
       #   run: pytest tests/integration/
