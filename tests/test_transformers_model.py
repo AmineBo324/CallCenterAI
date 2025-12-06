@@ -2,9 +2,10 @@ import pytest
 import torch
 from transformers import AutoTokenizer, AutoModelForSequenceClassification
 import joblib
+import os
 
 MODEL_DIR = "./models/fine_tuned_model"
-
+@pytest.mark.skipif(not os.path.exists('./models/fine_tuned_model'), reason="Model directory not present in CI")
 def test_transformer_model_loads():
     tokenizer = AutoTokenizer.from_pretrained(MODEL_DIR)
     model = AutoModelForSequenceClassification.from_pretrained(MODEL_DIR)
