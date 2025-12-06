@@ -16,6 +16,13 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
+      - name: 🧹 Free disk space
+        run: |
+          docker system prune -af
+          docker volume prune -f
+          rm -rf $HOME/.cache/pip
+          rm -rf /tmp/*
+          
       - name: Setup Python
         uses: actions/setup-python@v5
         with:
@@ -36,14 +43,8 @@ jobs:
       - name: Clean Docker
         run: docker system prune -af
 
-      - name: Build TF-IDF service
-        run: docker compose build tfidf-service
-
-      - name: Build Transformers service
-        run: docker compose build transformers-service
-
-      - name: Build Agent service
-        run: docker compose build agent-service
+      - name: Build services
+        run: docker compose build
 
       - name: Start services
         run: |
@@ -52,8 +53,6 @@ jobs:
 
       # - name: Run API integration tests
       #   run: pytest tests/integration/
-      - name: 🛑 Stop services
-        run: docker compose down
 
       - name: Verify CI/CD green
         run: echo "All tests passed ✅"
