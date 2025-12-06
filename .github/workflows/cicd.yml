@@ -36,8 +36,14 @@ jobs:
       - name: Clean Docker
         run: docker system prune -af
 
-      - name: Build services
-        run: docker compose build
+      - name: Build TF-IDF service
+        run: docker compose build tfidf-service
+
+      - name: Build Transformers service
+        run: docker compose build transformers-service
+
+      - name: Build Agent service
+        run: docker compose build agent-service
 
       - name: Start services
         run: |
@@ -46,6 +52,8 @@ jobs:
 
       # - name: Run API integration tests
       #   run: pytest tests/integration/
+      - name: 🛑 Stop services
+        run: docker compose down
 
       - name: Verify CI/CD green
         run: echo "All tests passed ✅"
