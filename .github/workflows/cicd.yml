@@ -33,6 +33,9 @@ jobs:
         run: pytest tests/
         continue-on-error: true
 
+      - name: Clean Docker
+        run: docker system prune -af
+
       - name: Build services
         run: docker compose build
 
