@@ -9,10 +9,8 @@ from fastapi.responses import Response
 import requests
 import re
 import time
-
-# ============================================
-# CONFIGURATION
-# ============================================
+from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI(
     title="AI Agent - Intelligent Router",
@@ -20,9 +18,23 @@ app = FastAPI(
     version="1.0.0"
 )
 
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  
+    allow_credentials=False,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+# ============================================
+# CONFIGURATION
+# ============================================
+
+
+
 # URLs des services
-TFIDF_URL = "http://localhost:8001"
-TRANSFORMER_URL = "http://localhost:8002"
+TFIDF_URL = "http://tfidf-service:8001"
+TRANSFORMER_URL = "http://transformers-service:8002"
 
 # ============================================
 # MÉTRIQUES PROMETHEUS
@@ -72,12 +84,6 @@ class AgentResponse(BaseModel):
 # ============================================
 
 def scrub_pii(text: str) -> tuple[str, bool]:
-    """
-    Détecte et masque les informations personnelles (PII)
-    
-    Returns:
-        (texte_nettoyé, pii_trouvé)
-    """
     pii_detected = False
     cleaned_text = text
     
@@ -98,12 +104,6 @@ def scrub_pii(text: str) -> tuple[str, bool]:
     return cleaned_text, pii_detected
 
 def detect_language(text: str) -> str:
-    """
-    Détection simple de la langue
-    
-    Returns:
-        Code langue: 'en', 'fr', 'ar'
-    """
     # Caractères arabes
     if re.search(r'[\u0600-\u06FF]', text):
         return 'ar'
@@ -117,12 +117,6 @@ def detect_language(text: str) -> str:
     return 'en'
 
 def decide_routing(text: str, cleaned_text: str) -> tuple[str, str, str]:
-    """
-    Décide quel modèle utiliser
-    
-    Returns:
-        (model_name, reason, explanation)
-    """
     text_length = len(cleaned_text.split())
     language = detect_language(cleaned_text)
     

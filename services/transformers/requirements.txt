@@ -1,0 +1,9 @@
+fastapi 
+uvicorn 
+torch 
+transformers 
+joblib 
+prometheus_client 
+pydantic
+scikit-learn
+mlflow

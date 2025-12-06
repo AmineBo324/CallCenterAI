@@ -1,7 +1,0 @@
-pandas
-scikit-learn
-transformers
-datasets
-evaluate
-torch
-joblib

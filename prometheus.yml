@@ -1,0 +1,15 @@
+global:
+  scrape_interval: 5s
+
+scrape_configs:
+  - job_name: "tfidf_service"
+    static_configs:
+      - targets: ["tfidf-service:8001"]
+
+  - job_name: "transformer_service"
+    static_configs:
+      - targets: ["transformers-service:8002"]
+
+  - job_name: "agent_service"
+    static_configs:
+      - targets: ["agent-service:8000"]

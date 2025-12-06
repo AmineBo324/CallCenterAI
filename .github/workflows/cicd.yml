@@ -1,0 +1,41 @@
+name: CI/CD
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    services:
+      docker:
+        image: docker:20.10.16
+        options: --privileged
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: 3.10
+
+      - name: Install dependencies
+        run: |
+          pip install -r services/tf_idf/requirements.txt
+          pip install -r services/transformers/requirements.txt
+          pip install -r services/agent/requirements.txt
+          pip install pytest
+
+      - name: Run unit tests
+        run: pytest tests/
+
+      - name: Build Docker images
+        run: docker-compose build
+
+      - name: Run API integration tests
+        run: pytest tests/integration/
+
+      - name: Verify CI/CD green
+        run: echo "All tests passed ✅"

@@ -1,18 +1,14 @@
 import requests
 
 tickets = [
-    # 🧠 Texte court → TF-IDF (test de base)
     "laptop broken",
 
-    # 💬 Texte moyen → encore TF-IDF ou bascule possible
     "Bonjour, j’ai un problème avec mon ordinateur qui s’éteint sans raison.",
 
-    # 🧩 Texte long et contextuel → Transformer (test de complexité)
     """Hello, I'm unable to access the shared financial dashboard even though I have 
     the correct credentials. This issue started after the last system update and 
     affects several members of my department.""",
 
-    # 🔒 Texte avec PII → Transformer pour analyse avancée
     "Hi, my email is john@example.com and I forgot my VPN password. Can someone reset it?"
 ]
 
